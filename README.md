@@ -1,5 +1,5 @@
 # SnakeGame 
-### Dmitriy Shumkin & Beckner Pu Calderon - July 7, 2026
+### Dmitriy.S & Beckner Pu Calderon - July 10, 2026
 The **SnakeGame** is a classic game running in a JFrame application. A green snake starts in the middle of the screen, and is able to go up, down, left and right to collect the red apples. The player wins the game if the green snake fills up each cell of rows and columns, and loses the game if the snake hits a wall, or hits itself.
 
 ## To run the game:
