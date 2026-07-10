@@ -2,7 +2,7 @@
 Title: SnakeGame
 Created by: Dmitriy Shumkin & Beckner Pu. Calderon
 Version: 1.2 Stable
-Rel date: 6/30/2026
+Rel date: 7/7/26
 About: This implementation of the classical SnakeGame is written in Java using Swing to create the application and GUI. The snake is represented by a LinkedList which grows each time the snake eats an apple. The game will end if the snake tried to cross over the borders, or itself.
 */
 
