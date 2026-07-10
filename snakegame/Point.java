@@ -4,6 +4,7 @@ public class Point {
     private final int row;
     private final int col;
 
+    // Initializing rows and columns to change snake direction
     public Point(int row, int col) {
         this.row = row;
         this.col = col;
