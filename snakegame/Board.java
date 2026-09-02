@@ -1,18 +1,18 @@
 package snakegame;
 
 // No global imports, only the necessary imports.
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.util.Random;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener, KeyListener {
 
@@ -20,15 +20,14 @@ public class Board extends JPanel implements ActionListener, KeyListener {
     private final int rows;
     private final int cols;
     private final int cellSize;
-    private final int delay;            // milliseconds between steps (snake speed)
 
     // Graphics configurations
     private static final Color SNAKE_BODY_COLOR = new Color(0, 170, 0);
     private static final Color SNAKE_HEAD_COLOR = new Color(0, 230, 0);
-    private static final Font SCORE_FONT   = new Font("SansSerif", Font.PLAIN, 14);
-    private static final Font TITLE_FONT   = new Font("SansSerif", Font.BOLD, 28);
+    private static final Font SCORE_FONT = new Font("SansSerif", Font.PLAIN, 14);
+    private static final Font TITLE_FONT = new Font("SansSerif", Font.BOLD, 28);
     private static final Font SUBTEXT_FONT = new Font("SansSerif", Font.PLAIN, 16);
-
+    
     // Game state
     private Snake snake;
     private Point apple;
@@ -38,7 +37,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
     private boolean gamePaused;
     private boolean gameWon;
     private int score;
-
+    private int prev;
     private final Random random = new Random();
     private final Timer timer;
 
@@ -50,16 +49,15 @@ public class Board extends JPanel implements ActionListener, KeyListener {
         RIGHT
     }
 
-    // Default board: 24x24, adaptive cell size, 128ms per step.
+    // Default board: 24x24, adaptive cell size, 124ms per step.
     public Board() {
-        this(24, 24, 128);
+        this(24, 24, 124);
     }
 
     // Sizing is adaptive, and the window size will resize on smaller screens, but will use the classic size on big screens.
     public Board(int rows, int cols, int delay) {
         this.rows = rows;
         this.cols = cols;
-        this.delay = delay;
 
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         
@@ -218,7 +216,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.WHITE);
         g.setFont(SCORE_FONT);
         g.drawString("Score: " + score, 8, 18);
-
+        g.drawString("Last Score: " + prev, 82, 18);
         // End-of-game messages.
         if (gameOver || gameWon) {
             drawCenteredScreen(g, gameWon ? "You Win!" : "Game Over", "Press ENTER to play again or ESC to exit");
@@ -240,6 +238,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
         g.setFont(SUBTEXT_FONT);
         int subWidth = g.getFontMetrics().stringWidth(subtitle);
         g.drawString(subtitle, (cols * cellSize - subWidth) / 2, (rows * cellSize) / 2 + 30);
+
     }
 
     //  Keyboard input (KeyListener)
@@ -249,12 +248,18 @@ public class Board extends JPanel implements ActionListener, KeyListener {
 
         // Restart after the game ends.
         if ((gameOver || gameWon) && key == KeyEvent.VK_ENTER) {
+            int temp = prev;
+            prev = score;
+            score = temp;
             startGame();
+
+            //save the previous score on the next game... After ENTER key is pressed.
+            //Send this state to the text
             return;
         }
 
         // Steer the snake (arrow keys OR W/A/S/D).
-        switch (key) {
+        switch(key) {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
                 if (direction != Direction.DOWN) nextDirection = Direction.UP;
