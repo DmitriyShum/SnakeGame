@@ -49,7 +49,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
         RIGHT
     }
 
-    // Default board: 24x24, adaptive cell size, 128ms per step.
+    // Default board: 24x24, adaptive cell size, 124ms per step.
     public Board() {
         this(24, 24, 124);
     }
